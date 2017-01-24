@@ -12,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class CanvasTests extends Application {
@@ -26,32 +25,42 @@ public class CanvasTests extends Application {
     @Override
     public void start(final Stage primaryStage) {
         final Canvas canvas = new ResizableCanvas();
-        final Pane stackPane = new StackPane();
-
-        final Pane wrappedPane = new Pane();
-        wrappedPane.getChildren().add(canvas);
-
-        canvas.widthProperty().bind(wrappedPane.widthProperty());
-        canvas.heightProperty().bind(wrappedPane.heightProperty());
-
+        final Pane wrappedPane = new CanvasPane(canvas);
         final ResizablePane overlayPane = new ResizablePane();
-
+        final Pane stackPane = new StackPane();
         stackPane.getChildren().addAll(wrappedPane, overlayPane);
 
-        primaryStage.setScene(new Scene(stackPane, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+        primaryStage.setScene(new Scene(stackPane, DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.AZURE));
         primaryStage.show();
 
         overlayPane.addGrid();
     }
 
-    class SquareObject extends Rectangle {
+    class CanvasPane extends Pane {
+        final Canvas canvas;
+
+        public CanvasPane(final Canvas canvas) {
+            this.canvas = canvas;
+            getChildren().add(canvas);
+            canvas.widthProperty().bind(widthProperty());
+            canvas.heightProperty().bind(heightProperty());
+        }
+    }
+
+    class Target extends Circle {
+        Pane parent;
         double orgSceneX, orgSceneY;
         double orgTranslateX, orgTranslateY;
 
-        public SquareObject(final double x, final double y, final double width) {
-            super(width, width);
-            setTranslateX(x);
-            setTranslateY(y);
+        public Target(final Pane parent, final double x, final double y, final double width) {
+            super(width);
+
+            this.parent = parent;
+            setStroke(Color.RED);
+            setFill(Color.RED.deriveColor(1, 1, 1, 0.7));
+
+            translateXProperty().bind(parent.widthProperty().multiply(x).divide(parent.getWidth()));
+            translateYProperty().bind(parent.heightProperty().multiply(y).divide(parent.getHeight()));
 
             cursorProperty().set(Cursor.HAND);
 
@@ -60,6 +69,7 @@ public class CanvasTests extends Application {
 
             setOnMousePressed(onMousePressedEventHandler);
             setOnMouseDragged(onMouseDraggedEventHandler);
+            setOnMouseReleased(onMouseReleasedEventHandler);
         }
 
         private final EventHandler<MouseEvent> onMouseEnteredEventHandler = event -> {
@@ -76,6 +86,9 @@ public class CanvasTests extends Application {
             if (!event.isPrimaryButtonDown()) {
                 return;
             }
+
+            translateXProperty().unbind();
+            translateYProperty().unbind();
 
             orgSceneX = event.getSceneX();
             orgSceneY = event.getSceneY();
@@ -104,13 +117,27 @@ public class CanvasTests extends Application {
             node.setTranslateX(newTranslateX);
             node.setTranslateY(newTranslateY);
         };
+
+        private final EventHandler<MouseEvent> onMouseReleasedEventHandler = event -> {
+            translateXProperty().bind(parent.widthProperty().multiply(event.getSceneX()).divide(parent.getWidth()));
+            translateYProperty().bind(parent.heightProperty().multiply(event.getSceneY()).divide(parent.getHeight()));
+
+            event.consume();
+        };
     }
 
-    class RoundObject extends Circle {
-        public RoundObject(final double x, final double y, final double width) {
+    class Candidate extends Circle {
+        final Pane parent;
+
+        public Candidate(final Pane parent, final double x, final double y, final double width) {
             super(width);
-            setTranslateX(x);
-            setTranslateY(y);
+
+            this.parent = parent;
+            setStroke(Color.GREEN);
+            setFill(Color.GREEN.deriveColor(1, 1, 1, 0.7));
+
+            translateXProperty().bind(parent.widthProperty().multiply(x).divide(parent.getWidth()));
+            translateYProperty().bind(parent.heightProperty().multiply(y).divide(parent.getHeight()));
 
             setOnMouseEntered(onMouseEnteredEventHandler);
             setOnMouseExited(onMouseExitedEventHandler);
@@ -131,10 +158,8 @@ public class CanvasTests extends Application {
         double originalWidth, originalHeight;
 
         public ResizablePane() {
-            widthProperty().addListener(event -> resize());
-            heightProperty().addListener(event -> resize());
-
             setOnMousePressed(onMouseClicked);
+            cursorProperty().set(Cursor.CROSSHAIR);
         }
 
         public void addGrid() {
@@ -146,11 +171,8 @@ public class CanvasTests extends Application {
 
             for (double x = 0; x <= width; x += offsetX) {
                 for (double y = 0; y <= height; y += offsetY) {
-                    final RoundObject round = new RoundObject(x, y, 4);
-                    round.setStroke(Color.GREEN);
-                    round.setFill(Color.GREEN.deriveColor(1, 1, 1, 0.7));
-
-                    getChildren().add(round);
+                    final Candidate candidate = new Candidate(this, x, y, 4);
+                    getChildren().add(candidate);
                 }
             }
         }
@@ -160,25 +182,10 @@ public class CanvasTests extends Application {
                 return;
             }
 
-            final SquareObject square = new SquareObject(event.getSceneX(), event.getSceneY(), 10);
-            square.setStroke(Color.RED);
-            square.setFill(Color.RED.deriveColor(1, 1, 1, 0.7));
+            final Target target = new Target(this, event.getSceneX(), event.getSceneY(), 5);
 
-            getChildren().add(square);
+            getChildren().add(target);
         };
-
-        private void resize() {
-            final double width = getWidth();
-            final double height = getHeight();
-
-            getChildren().forEach(node -> {
-                node.setTranslateX((node.getTranslateX() * width) / originalWidth);
-                node.setTranslateY((node.getTranslateY() * height) / originalHeight);
-            });
-
-            originalWidth = getWidth();
-            originalHeight = getHeight();
-        }
     }
 
     class ResizableCanvas extends Canvas {

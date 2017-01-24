@@ -1,4 +1,5 @@
 package org.clock;
+
 import javafx.scene.paint.Color;
 
 public class ArcPieceBuilder {

@@ -1,4 +1,5 @@
 package org.draggable.example;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,7 +110,6 @@ public class FxDragDropExample3 extends Application {
         // Set the Style of the VBox
         root.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;" + "-fx-border-width: 2;" + "-fx-border-insets: 5;" + "-fx-border-radius: 5;"
                 + "-fx-border-color: blue;");
-
 
         final Scene scene = new Scene(root);
         stage.setScene(scene);

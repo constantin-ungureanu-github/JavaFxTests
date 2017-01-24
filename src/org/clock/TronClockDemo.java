@@ -1,4 +1,5 @@
 package org.clock;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -16,13 +17,14 @@ public class TronClockDemo extends Application {
 
     @Override
     public void start(final Stage primaryStage) {
-
         final Group root = new Group();
         final Scene scene = new Scene(root, 650, 220, Color.rgb(0, 0, 0));
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
         // create a canvas node
         final Canvas canvas = new Canvas();
-
+        root.getChildren().add(canvas);
         // bind the dimensions when the user resizes the window.
         canvas.widthProperty().bind(primaryStage.widthProperty());
         canvas.heightProperty().bind(primaryStage.heightProperty());
@@ -69,9 +71,7 @@ public class TronClockDemo extends Application {
         }.start();
 
         // add the single node onto the scene graph
-        root.getChildren().add(canvas);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+
     }
 
 }

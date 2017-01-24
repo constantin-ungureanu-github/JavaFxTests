@@ -51,7 +51,7 @@ public class BubbleChartSample extends Application {
 
         final Scene scene = new Scene(blc);
         blc.getData().addAll(series1, series2);
-        // scene.getStylesheets().add("bubblechartsample/Chart.css");
+
         stage.setScene(scene);
         stage.show();
     }

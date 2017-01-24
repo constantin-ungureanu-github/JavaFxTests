@@ -117,14 +117,14 @@ public class DragNodes2 extends Application {
 
         @Override
         protected void layoutChildren() {
-            final double x = snappedLeftInset();
-            final double y = snappedTopInset();
-            final double w = snapSize(getWidth()) - x - snappedRightInset();
-            final double h = snapSize(getHeight()) - y - snappedBottomInset();
-            canvas.setLayoutX(x);
-            canvas.setLayoutY(y);
-            canvas.setWidth(w);
-            canvas.setHeight(h);
+            final double layoutX = snappedLeftInset();
+            final double layoutY = snappedTopInset();
+            final double width = snapSize(getWidth()) - layoutX - snappedRightInset();
+            final double height = snapSize(getHeight()) - layoutY - snappedBottomInset();
+            canvas.setLayoutX(layoutX);
+            canvas.setLayoutY(layoutY);
+            canvas.setWidth(width);
+            canvas.setHeight(height);
         }
     }
 }
