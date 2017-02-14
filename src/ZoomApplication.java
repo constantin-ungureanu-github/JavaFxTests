@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 
 public class ZoomApplication extends Application {
     static public class PannableCanvas extends Pane {
-
         DoubleProperty myScale = new SimpleDoubleProperty(1.0);
 
         public PannableCanvas() {
@@ -28,12 +27,6 @@ public class ZoomApplication extends Application {
             // add scale transform
             scaleXProperty().bind(myScale);
             scaleYProperty().bind(myScale);
-
-            // logging
-            addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-                System.out.println("canvas event: " + (((event.getSceneX() - getBoundsInParent().getMinX()) / getScale()) + ", scale: " + getScale()));
-                System.out.println("canvas bounds: " + getBoundsInParent());
-            });
         }
 
         public void addGrid() {
@@ -140,7 +133,6 @@ public class ZoomApplication extends Application {
     }
 
     class SceneGestures {
-
         private static final double MAX_SCALE = 10.0d;
         private static final double MIN_SCALE = .1d;
 
@@ -197,7 +189,7 @@ public class ZoomApplication extends Application {
          */
         private final EventHandler<ScrollEvent> onScrollEventHandler = event -> {
 
-            double scale = canvas.getScale(); // currently we only use Y, same value is used for X
+            double scale = canvas.getScale();
             final double oldScale = scale;
 
             scale *= Math.pow(1.01, event.getDeltaY());

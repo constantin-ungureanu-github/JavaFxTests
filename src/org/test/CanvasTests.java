@@ -1,6 +1,8 @@
 package org.test;
 
 import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -24,8 +26,9 @@ public class CanvasTests extends Application {
 
     @Override
     public void start(final Stage primaryStage) {
-        final Canvas canvas = new ResizableCanvas();
+        final ResizableCanvas canvas = new ResizableCanvas();
         final Pane wrappedPane = new CanvasPane(canvas);
+
         final ResizablePane overlayPane = new ResizablePane();
         final Pane stackPane = new StackPane();
         stackPane.getChildren().addAll(wrappedPane, overlayPane);
@@ -37,13 +40,79 @@ public class CanvasTests extends Application {
     }
 
     class CanvasPane extends Pane {
-        final Canvas canvas;
-
-        public CanvasPane(final Canvas canvas) {
-            this.canvas = canvas;
+        public CanvasPane(final ResizableCanvas canvas) {
             getChildren().add(canvas);
             canvas.widthProperty().bind(widthProperty());
             canvas.heightProperty().bind(heightProperty());
+        }
+    }
+
+    class ResizablePane extends Pane {
+        double originalWidth, originalHeight;
+
+        public ResizablePane() {
+            setOnMousePressed(onMouseClicked);
+            cursorProperty().set(Cursor.CROSSHAIR);
+            setPickOnBounds(false);
+        }
+
+        public void addGrid() {
+            final double width = getWidth();
+            final double height = getHeight();
+
+            final double offsetX = getWidth() / 10;
+            final double offsetY = getHeight() / 10;
+
+            for (double x = 0; x <= width; x += offsetX) {
+                for (double y = 0; y <= height; y += offsetY) {
+                    final Candidate candidate = new Candidate(this, x, y, 4);
+                    getChildren().add(candidate);
+                }
+            }
+        }
+
+        private final EventHandler<MouseEvent> onMouseClicked = event -> {
+            if (!event.isPrimaryButtonDown()) {
+                return;
+            }
+
+            final Target target = new Target(this, event.getSceneX(), event.getSceneY(), 5);
+
+            getChildren().add(target);
+        };
+    }
+
+    class ResizableCanvas extends Canvas {
+        DoubleProperty myScale = new SimpleDoubleProperty(1.0);
+
+        public ResizableCanvas() {
+            widthProperty().addListener(event -> draw());
+            heightProperty().addListener(event -> draw());
+
+            scaleXProperty().bind(myScale);
+            scaleYProperty().bind(myScale);
+
+            setPickOnBounds(false);
+        }
+
+        private void draw() {
+            final double width = getWidth();
+            final double height = getHeight();
+
+            final GraphicsContext gc = getGraphicsContext2D();
+            gc.clearRect(0, 0, width, height);
+
+            gc.setStroke(Color.RED);
+            gc.strokeLine(0, 0, width, height);
+            gc.strokeLine(0, height, width, 0);
+
+            gc.setStroke(Color.RED);
+            gc.strokeRoundRect(10, 10, width - 20, height - 20, 10, 10);
+        }
+
+        @Override
+        public boolean isResizable() {
+            return true;
         }
     }
 
@@ -56,8 +125,8 @@ public class CanvasTests extends Application {
             super(width);
 
             this.parent = parent;
-            setStroke(Color.RED);
-            setFill(Color.RED.deriveColor(1, 1, 1, 0.7));
+            setStroke(Color.BLACK);
+            setFill(Color.WHITE.deriveColor(1, 1, 1, 0.7));
 
             translateXProperty().bind(parent.widthProperty().multiply(x).divide(parent.getWidth()));
             translateYProperty().bind(parent.heightProperty().multiply(y).divide(parent.getHeight()));
@@ -133,7 +202,7 @@ public class CanvasTests extends Application {
             super(width);
 
             this.parent = parent;
-            setStroke(Color.GREEN);
+            setStroke(Color.BLACK);
             setFill(Color.GREEN.deriveColor(1, 1, 1, 0.7));
 
             translateXProperty().bind(parent.widthProperty().multiply(x).divide(parent.getWidth()));
@@ -152,66 +221,5 @@ public class CanvasTests extends Application {
             setScaleX(1);
             setScaleY(1);
         };
-    }
-
-    class ResizablePane extends Pane {
-        double originalWidth, originalHeight;
-
-        public ResizablePane() {
-            setOnMousePressed(onMouseClicked);
-            cursorProperty().set(Cursor.CROSSHAIR);
-        }
-
-        public void addGrid() {
-            final double width = getWidth();
-            final double height = getHeight();
-
-            final double offsetX = getWidth() / 10;
-            final double offsetY = getHeight() / 10;
-
-            for (double x = 0; x <= width; x += offsetX) {
-                for (double y = 0; y <= height; y += offsetY) {
-                    final Candidate candidate = new Candidate(this, x, y, 4);
-                    getChildren().add(candidate);
-                }
-            }
-        }
-
-        private final EventHandler<MouseEvent> onMouseClicked = event -> {
-            if (!event.isPrimaryButtonDown()) {
-                return;
-            }
-
-            final Target target = new Target(this, event.getSceneX(), event.getSceneY(), 5);
-
-            getChildren().add(target);
-        };
-    }
-
-    class ResizableCanvas extends Canvas {
-        public ResizableCanvas() {
-            widthProperty().addListener(event -> draw());
-            heightProperty().addListener(event -> draw());
-        }
-
-        private void draw() {
-            final double width = getWidth();
-            final double height = getHeight();
-
-            final GraphicsContext gc = getGraphicsContext2D();
-            gc.clearRect(0, 0, width, height);
-
-            gc.setStroke(Color.RED);
-            gc.strokeLine(0, 0, width, height);
-            gc.strokeLine(0, height, width, 0);
-
-            gc.setStroke(Color.RED);
-            gc.strokeRoundRect(10, 10, width - 20, height - 20, 10, 10);
-        }
-
-        @Override
-        public boolean isResizable() {
-            return true;
-        }
     }
 }
