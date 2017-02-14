@@ -1,10 +1,19 @@
 package org.charts;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.Chart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 
 public class LineChartSample extends Application {
@@ -15,10 +24,9 @@ public class LineChartSample extends Application {
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("Month");
+
         final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
-
         lineChart.setTitle("Stock Monitoring, 2010");
-
         lineChart.setCreateSymbols(false);
         lineChart.setAlternativeRowFillVisible(false);
         final XYChart.Series series1 = new XYChart.Series();
@@ -67,11 +75,24 @@ public class LineChartSample extends Application {
         series3.getData().add(new XYChart.Data("Nov", 45));
         series3.getData().add(new XYChart.Data("Dec", 44));
 
-        final Scene scene = new Scene(lineChart);
         lineChart.getData().addAll(series1, series2, series3);
-        // scene.getStylesheets().add("linechartsample/Chart.css");
+
+        final Scene scene = new Scene(lineChart);
         stage.setScene(scene);
         stage.show();
+
+        saveAsPng(lineChart);
+    }
+
+    public void saveAsPng(final Chart chart) {
+        final WritableImage image = chart.snapshot(new SnapshotParameters(), null);
+
+        final File file = new File("chart.png");
+
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+        } catch (final IOException e) {
+        }
     }
 
     public static void main(final String[] args) {
