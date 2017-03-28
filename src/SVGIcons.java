@@ -11,7 +11,6 @@ import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
 public class SVGIcons extends Application {
-
     private static final int SIZE = 16;
 
     @Override
@@ -42,7 +41,7 @@ public class SVGIcons extends Application {
         final SVGPath path = new SVGPath();
         path.setFill(Color.ALICEBLUE);
         path.setStroke(Color.BLUE);
-        path.setContent("M0," + size + "L" + size / 2 + ",0 " + size + "," + size + " " + size / 2 + "," + 2 * size / 3 + "z");
+        path.setContent("M0," + size + "L" + (size / 2) + ",0 " + size + "," + size + " " + (size / 2) + "," + ((2 * size) / 3) + "z");
         return path;
     }
 
@@ -58,7 +57,7 @@ public class SVGIcons extends Application {
         final SVGPath path = new SVGPath();
         path.setFill(Color.MISTYROSE);
         path.setStroke(Color.RED);
-        path.setContent("M0,0A" + size / 2 + "," + size + ",0,1,0," + size + ",0z");
+        path.setContent("M0,0A" + (size / 2) + "," + size + ",0,1,0," + size + ",0z");
         return path;
     }
 

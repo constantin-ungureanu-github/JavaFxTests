@@ -93,7 +93,6 @@ public class PhysicsTest extends Application {
             p.setCenterY(newTranslateY);
 
             for (final Circle c : circles) {
-
                 if (c == p) {
                     continue;
                 }

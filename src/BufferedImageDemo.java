@@ -17,8 +17,8 @@ public class BufferedImageDemo extends Application {
 
     @Override
     public void start(final Stage stage) throws Exception {
-        final HBox p = new HBox();
-        p.setStyle("-fx-background-color:yellow;");
+        final HBox box = new HBox();
+        box.setStyle("-fx-background-color:yellow;");
 
         final int[] types = { BufferedImage.TYPE_3BYTE_BGR, BufferedImage.TYPE_4BYTE_ABGR, BufferedImage.TYPE_INT_RGB, BufferedImage.TYPE_INT_ARGB };
         for (final int t : types) {
@@ -31,9 +31,9 @@ public class BufferedImageDemo extends Application {
             final WritableImage img = SwingFXUtils.toFXImage(bimg, null);
             final ImageView iview = new ImageView(img);
 
-            p.getChildren().add(iview);
+            box.getChildren().add(iview);
         }
-        final Scene scene = new Scene(p);
+        final Scene scene = new Scene(box);
         stage.setScene(scene);
         stage.show();
     }

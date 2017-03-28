@@ -21,7 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class WritableImageDemo extends Application {
-
     private Image src;
     private WritableImage dest;
     private int kernelSize = 1;
@@ -219,6 +218,7 @@ public class WritableImageDemo extends Application {
                     green += ((color >>> 8) & 0xFF);
                     blue += (color & 0xFF);
                 }
+
                 alpha = alpha / kernelWidth / kernelHeight;
                 red = red / kernelWidth / kernelHeight;
                 green = green / kernelWidth / kernelHeight;

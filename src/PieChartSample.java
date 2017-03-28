@@ -1,4 +1,3 @@
-package org.charts;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,7 +36,6 @@ public class PieChartSample extends Application {
 
         ((Group) scene.getRoot()).getChildren().addAll(chart, caption);
         stage.setScene(scene);
-        // scene.getStylesheets().add("piechartsample/Chart.css");
         stage.show();
     }
 

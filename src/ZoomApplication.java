@@ -54,7 +54,6 @@ public class ZoomApplication extends Application {
             }
 
             getChildren().add(grid);
-
             grid.toBack();
         }
 
@@ -84,7 +83,6 @@ public class ZoomApplication extends Application {
     }
 
     class NodeGestures {
-
         private final DragContext nodeDragContext = new DragContext();
 
         PannableCanvas canvas;

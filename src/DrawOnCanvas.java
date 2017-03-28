@@ -18,46 +18,23 @@ public class DrawOnCanvas extends Application {
 
     @Override
     public void start(final Stage primaryStage) {
-
         final Canvas canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         initDraw(graphicsContext);
 
-        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED,
-                event -> {
-                    graphicsContext.beginPath();
-                    graphicsContext.moveTo(event.getX(), event.getY());
-                    graphicsContext.stroke();
-                });
+        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+            graphicsContext.beginPath();
+            graphicsContext.moveTo(event.getX(), event.getY());
+            graphicsContext.stroke();
+        });
 
-        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED,
-                event -> {
-                    graphicsContext.lineTo(event.getX(), event.getY());
-                    graphicsContext.stroke();
-                });
+        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+            graphicsContext.lineTo(event.getX(), event.getY());
+            graphicsContext.stroke();
+        });
 
-        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED,
-                event -> {
-                });
-//        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-//            x0 = event.getX();
-//            y0 = event.getY();
-//        });
-//
-//        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-//        });
-//
-//        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
-//            x1 = event.getX();
-//            y1 = event.getY();
-//
-//            final double x = (x0 > x1) ? x1 : x0;
-//            final double y = (y0 > y1) ? y1 : y0;
-//            final double w = (x0 > x1) ? x0 - x1 : x1 - x0;
-//            final double h = (y0 > y1) ? y0 - y1 : y1 - y0;
-//
-//            graphicsContext.drawImage(image, x, y, w, h);
-//        });
+        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+        });
 
         final Group root = new Group();
         final VBox vBox = new VBox();

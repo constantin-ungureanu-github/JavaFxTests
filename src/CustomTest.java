@@ -1,5 +1,3 @@
-package org.test;
-
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -16,7 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-public class CanvasTests extends Application {
+public class CustomTest extends Application {
     final static int DEFAULT_WIDTH = 800;
     final static int DEFAULT_HEIGHT = 600;
 

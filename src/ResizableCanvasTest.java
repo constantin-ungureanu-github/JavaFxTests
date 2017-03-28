@@ -7,7 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ResizableCanvasTest extends Application {
-
     class ResizableCanvas extends Canvas {
 
         public ResizableCanvas() {

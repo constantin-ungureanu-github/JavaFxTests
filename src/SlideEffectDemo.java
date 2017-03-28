@@ -24,7 +24,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SlideEffectDemo extends Application {
-
     private final Rectangle2D boxBounds = new Rectangle2D(100, 100, 250, 200);
 
     private StackPane bottomPane;

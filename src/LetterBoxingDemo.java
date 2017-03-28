@@ -26,7 +26,7 @@ public class LetterBoxingDemo extends Application {
         stage.setScene(scene);
         stage.show();
 
-//        letterbox(scene, root);
+        letterbox(scene, root);
         stage.setFullScreen(true);
     }
 
@@ -36,7 +36,7 @@ public class LetterBoxingDemo extends Application {
 
         final ImageView imageView = new ImageView("panda.jpg");
         imageView.setPreserveRatio(true);
-        imageView.setSmooth(true);
+        imageView.setSmooth(false);
 
         imageView.setFitHeight(MAX_HEIGHT);
         content.getChildren().add(imageView);

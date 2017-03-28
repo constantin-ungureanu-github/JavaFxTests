@@ -106,7 +106,6 @@ class PannableCanvas extends Pane {
         });
     }
 
-
     public void addGrid() {
         final double width = getBoundsInLocal().getWidth();
         final double height = getBoundsInLocal().getHeight();
@@ -271,9 +270,9 @@ class SceneGestures {
 
         final double delta = 1.01;
         if (event.getDeltaY() < 0) {
-             scale /= Math.pow(delta, -event.getDeltaY()/20);
+            scale /= Math.pow(delta, -event.getDeltaY() / 20);
         } else {
-             scale *= Math.pow(delta, event.getDeltaY()/20);
+            scale *= Math.pow(delta, event.getDeltaY() / 20);
         }
 
         if (scale <= MIN_SCALE) {
@@ -283,8 +282,7 @@ class SceneGestures {
         }
 
         // pivot value must be untransformed, i. e. without scaling
-        canvas.setPivot(
-                ((event.getSceneX() - canvas.getBoundsInParent().getMinX()) / oldScale),
+        canvas.setPivot(((event.getSceneX() - canvas.getBoundsInParent().getMinX()) / oldScale),
                 ((event.getSceneY() - canvas.getBoundsInParent().getMinY()) / oldScale));
 
         canvas.setScale(scale);
