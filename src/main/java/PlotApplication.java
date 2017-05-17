@@ -2,13 +2,9 @@
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import plot.CanvasPane;
-import plot.PlotPane;
-import plot.ResizablePane;
+import plot.LayeredPlot;
 
 public class PlotApplication extends Application {
     final static int DEFAULT_WIDTH = 800;
@@ -20,19 +16,21 @@ public class PlotApplication extends Application {
 
     @Override
     public void start(final Stage primaryStage) {
+//        final AxesSystem<Double, Double> axes = new AxesSystem<>(DEFAULT_WIDTH, DEFAULT_HEIGHT, -8, 8, -8, 8);
+//
+//        final Pane wrappedPane = new CanvasPane();
+//
+//        final ResizablePane overlayPane = new ResizablePane();
+//
+//        final Pane plotPane = new PlotPane(axes);
+//
+//        final Pane stackPane = new StackPane();
+//        stackPane.getChildren().addAll(overlayPane, wrappedPane, plotPane);
 
-        final Pane wrappedPane = new CanvasPane();
-
-        final ResizablePane overlayPane = new ResizablePane();
-
-        final Pane plotPane = new PlotPane();
-
-        final Pane stackPane = new StackPane();
-        stackPane.getChildren().addAll(plotPane, overlayPane, wrappedPane);
-
-        primaryStage.setScene(new Scene(stackPane, DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.AZURE));
+        final LayeredPlot plot = new LayeredPlot();
+        primaryStage.setScene(new Scene(plot, DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.AZURE));
         primaryStage.show();
 
-        overlayPane.addGrid();
+//        overlayPane.addGrid();
     }
 }

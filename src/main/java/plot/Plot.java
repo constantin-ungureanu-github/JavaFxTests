@@ -22,6 +22,10 @@ public class Plot extends Region {
         this.tick = tick;
 
         setPickOnBounds(false);
+
+        setMinSize(Pane.USE_PREF_SIZE, Pane.USE_PREF_SIZE);
+        setMaxSize(Pane.USE_PREF_SIZE, Pane.USE_PREF_SIZE);
+        setPrefSize(axes.getXAxis().getLength(), axes.getYAxis().getLength());
     }
 
     public void drawPlot() {
@@ -29,7 +33,7 @@ public class Plot extends Region {
         path.setStroke(Color.ORANGE.deriveColor(0, 1, 1, 0.7));
         path.setStrokeWidth(2);
 
-        path.setClip(new Rectangle(0, 0, axes.getPrefWidth(), axes.getPrefHeight()));
+        path.setClip(new Rectangle(0, 0, axes.getXAxis().getLength(), axes.getYAxis().getLength()));
 
         double x = axes.getMinX();
         double y = function.apply(x);
@@ -45,11 +49,8 @@ public class Plot extends Region {
             x += tick;
         }
 
-        setMinSize(Pane.USE_PREF_SIZE, Pane.USE_PREF_SIZE);
-        setPrefSize(axes.getPrefWidth(), axes.getPrefHeight());
-        setMaxSize(Pane.USE_PREF_SIZE, Pane.USE_PREF_SIZE);
 
         getChildren().clear();
-        getChildren().setAll(axes, path);
+        getChildren().setAll(path);
     }
 }

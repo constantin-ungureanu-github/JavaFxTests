@@ -7,11 +7,11 @@ import javafx.scene.layout.Pane;
 import plot.objects.Candidate;
 import plot.objects.Target;
 
-public class ResizablePane extends Pane {
-    public ResizablePane() {
+public class ObjectsPane extends Pane {
+    public ObjectsPane() {
+        setPickOnBounds(false);
         setOnMousePressed(onMouseClicked);
         cursorProperty().set(Cursor.CROSSHAIR);
-        setPickOnBounds(false);
     }
 
     public void addGrid() {

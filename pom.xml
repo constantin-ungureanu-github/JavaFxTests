@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.asml.lis.setup.plot-prototypes</groupId>
-	<artifactId>plot-prototype-2</artifactId>
+	<artifactId>fx-prototype</artifactId>
 	<version>0.1-SNAPSHOT</version>
 
 	<properties>
@@ -24,8 +24,8 @@
 		<version.maven.javadoc.plugin>2.10.4</version.maven.javadoc.plugin>
 
         <!-- Logging -->
-        <version.slf4j>1.7.24</version.slf4j>
-        <version.log4j>2.8.1</version.log4j>
+        <version.slf4j>1.7.25</version.slf4j>
+        <version.log4j>2.8.2</version.log4j>
 
 		<!-- Auxiliary -->
 		<version.commons.math3>3.6.1</version.commons.math3>

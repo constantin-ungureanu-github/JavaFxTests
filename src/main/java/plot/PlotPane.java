@@ -6,25 +6,28 @@ import javafx.scene.layout.Pane;
 import plot.axis.AxesSystem;
 
 public class PlotPane extends Pane {
-    public PlotPane() {
+    final AxesSystem<Double, Double> axes;
+    final Function<Double, Double> function;
+    final Plot plot;
+
+    public PlotPane(final AxesSystem<Double, Double> axes) {
+        this.axes = axes;
+
         setPickOnBounds(false);
 
-        widthProperty().addListener(event -> {
-            drawPlot();
-        });
+        axes.getXAxis().getLengthProperty().bind(widthProperty());
+        axes.getYAxis().getLengthProperty().bind(heightProperty());
 
-        heightProperty().addListener(event -> {
-            drawPlot();
-        });
+        widthProperty().addListener(event -> drawPlot());
+        heightProperty().addListener(event -> drawPlot());
+
+        function = x -> Math.sinh(x);
+        plot = new Plot(axes, function, 0.01);
     }
 
     public void drawPlot() {
         getChildren().clear();
 
-        final AxesSystem<Double, Double> axes = new AxesSystem<>(getWidth(), getHeight(), -8, 8, -8, 8);
-        final Function<Double, Double> function = x -> Math.sinh(x);
-
-        final Plot plot = new Plot(axes, function, 0.01);
         plot.drawPlot();
 
         plot.setOnMouseClicked(event -> {

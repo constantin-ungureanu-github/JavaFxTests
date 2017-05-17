@@ -30,41 +30,49 @@ public class AxesSystem<X extends Number, Y extends Number> extends Region {
         getChildren().setAll(xAxis, yAxis);
     }
 
+    public Axis<X> getXAxis() {
+        return xAxis;
+    }
+
+    public Axis<Y> getYAxis() {
+        return yAxis;
+    }
+
     public Double getMinX() {
-        return xAxis.getLowerBound();
+        return xAxis.getMinimum();
     }
 
     public Double getMinY() {
-        return yAxis.getLowerBound();
+        return yAxis.getMinimum();
     }
 
     public Double getMaxX() {
-        return xAxis.getUpperBound();
+        return xAxis.getMaximum();
     }
 
     public Double getMaxY() {
-        return xAxis.getUpperBound();
+        return xAxis.getMaximum();
     }
 
     public double applyX(final double x) {
-        final double tx = xAxis.getPrefWidth() / 2;
-        final double sx = xAxis.getPrefWidth() / (xAxis.getUpperBound() - xAxis.getLowerBound());
+        final double tx = xAxis.getLength() / 2;
+        final double sx = xAxis.getLength() / (xAxis.getMaximum() - xAxis.getMinimum());
 
         return (x * sx) + tx;
     }
 
     public double applyY(final double y) {
-        final double ty = yAxis.getPrefHeight() / 2;
-        final double sy = yAxis.getPrefHeight() / (yAxis.getUpperBound() - yAxis.getLowerBound());
+        final double ty = yAxis.getLength() / 2;
+        final double sy = yAxis.getLength() / (yAxis.getMaximum() - yAxis.getMinimum());
 
         return (-y * sy) + ty;
     }
 
     public double invertX(final double x) {
-        return 2 * (x - getWidth() / 2) / (getWidth() / xAxis.getUpperBound());
+        return 2 * (x - xAxis.getLength() / 2) / (xAxis.getLength() / xAxis.getMaximum());
     }
 
     public double invertY(final double y) {
-        return -1 * 2 * (y - getHeight() / 2) / (getHeight() / yAxis.getUpperBound());
+        return -1 * 2 * (y - yAxis.getLength() / 2) / (yAxis.getLength() / yAxis.getMaximum());
     }
 }
