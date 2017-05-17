@@ -1,3 +1,5 @@
+package example;
+
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -17,6 +19,73 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class ZoomApplication extends Application {
+
+    public static void main(final String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(final Stage stage) {
+        final Group group = new Group();
+
+        final PannableCanvas canvas = new PannableCanvas();
+
+        canvas.setTranslateX(100);
+        canvas.setTranslateY(100);
+
+        // create sample nodes which can be dragged
+        final NodeGestures nodeGestures = new NodeGestures(canvas);
+
+        final Label label1 = new Label("Draggable node 1");
+        label1.setTranslateX(10);
+        label1.setTranslateY(10);
+        label1.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+        label1.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+
+        final Label label2 = new Label("Draggable node 2");
+        label2.setTranslateX(100);
+        label2.setTranslateY(100);
+        label2.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+        label2.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+
+        final Label label3 = new Label("Draggable node 3");
+        label3.setTranslateX(200);
+        label3.setTranslateY(200);
+        label3.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+        label3.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+
+        final Circle circle1 = new Circle(300, 300, 50);
+        circle1.setStroke(Color.ORANGE);
+        circle1.setFill(Color.ORANGE.deriveColor(1, 1, 1, 0.5));
+        circle1.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+        circle1.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+
+        final Rectangle rect1 = new Rectangle(100, 100);
+        rect1.setTranslateX(450);
+        rect1.setTranslateY(450);
+        rect1.setStroke(Color.BLUE);
+        rect1.setFill(Color.BLUE.deriveColor(1, 1, 1, 0.5));
+        rect1.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+        rect1.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+
+        canvas.getChildren().addAll(label1, label2, label3, circle1, rect1);
+
+        group.getChildren().add(canvas);
+
+        // create scene which can be dragged and zoomed
+        final Scene scene = new Scene(group, 1024, 768);
+
+        final SceneGestures sceneGestures = new SceneGestures(canvas);
+        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
+        scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
+        scene.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+
+        stage.setScene(scene);
+        stage.show();
+
+        canvas.addGrid();
+    }
+
     static public class PannableCanvas extends Pane {
         DoubleProperty myScale = new SimpleDoubleProperty(1.0);
 
@@ -126,7 +195,6 @@ public class ZoomApplication extends Application {
             node.setTranslateY(nodeDragContext.translateAnchorY + ((event.getSceneY() - nodeDragContext.mouseAnchorY) / scale));
 
             event.consume();
-
         };
     }
 
@@ -155,7 +223,6 @@ public class ZoomApplication extends Application {
         }
 
         private final EventHandler<MouseEvent> onMousePressedEventHandler = event -> {
-
             // right mouse button => panning
             if (!event.isSecondaryButtonDown()) {
                 return;
@@ -207,74 +274,6 @@ public class ZoomApplication extends Application {
             canvas.setPivot(f * dx, f * dy);
 
             event.consume();
-
         };
-
-    }
-
-    public static void main(final String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(final Stage stage) {
-        final Group group = new Group();
-
-        final PannableCanvas canvas = new PannableCanvas();
-
-        canvas.setTranslateX(100);
-        canvas.setTranslateY(100);
-
-        // create sample nodes which can be dragged
-        final NodeGestures nodeGestures = new NodeGestures(canvas);
-
-        final Label label1 = new Label("Draggable node 1");
-        label1.setTranslateX(10);
-        label1.setTranslateY(10);
-        label1.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-        label1.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-
-        final Label label2 = new Label("Draggable node 2");
-        label2.setTranslateX(100);
-        label2.setTranslateY(100);
-        label2.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-        label2.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-
-        final Label label3 = new Label("Draggable node 3");
-        label3.setTranslateX(200);
-        label3.setTranslateY(200);
-        label3.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-        label3.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-
-        final Circle circle1 = new Circle(300, 300, 50);
-        circle1.setStroke(Color.ORANGE);
-        circle1.setFill(Color.ORANGE.deriveColor(1, 1, 1, 0.5));
-        circle1.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-        circle1.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-
-        final Rectangle rect1 = new Rectangle(100, 100);
-        rect1.setTranslateX(450);
-        rect1.setTranslateY(450);
-        rect1.setStroke(Color.BLUE);
-        rect1.setFill(Color.BLUE.deriveColor(1, 1, 1, 0.5));
-        rect1.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-        rect1.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-
-        canvas.getChildren().addAll(label1, label2, label3, circle1, rect1);
-
-        group.getChildren().add(canvas);
-
-        // create scene which can be dragged and zoomed
-        final Scene scene = new Scene(group, 1024, 768);
-
-        final SceneGestures sceneGestures = new SceneGestures(canvas);
-        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
-        scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
-        scene.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
-
-        stage.setScene(scene);
-        stage.show();
-
-        canvas.addGrid();
     }
 }

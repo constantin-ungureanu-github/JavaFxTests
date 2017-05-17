@@ -1,3 +1,4 @@
+package example;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,6 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 public class DragNodes extends Application {
-
     public static List<Circle> circles = new ArrayList<>();
 
     public static void main(final String[] args) {

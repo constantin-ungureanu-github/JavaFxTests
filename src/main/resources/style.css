@@ -1,0 +1,9 @@
+.line {
+    -fx-stroke:         red;
+    -fx-stroke-width:   2px;
+    -fx-cursor:         hand;
+}
+
+.line:hover {
+    -fx-stroke-width:   4px;
+}

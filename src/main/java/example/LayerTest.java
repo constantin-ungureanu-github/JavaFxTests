@@ -1,3 +1,5 @@
+package example;
+
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -8,6 +10,10 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class LayerTest extends Application {
+    public static void main(final String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(final Stage primaryStage) throws Exception {
         final Node layerA = createLayerA();
@@ -40,9 +46,5 @@ public class LayerTest extends Application {
         layerB.getChildren().setAll(buttonB);
         layerB.setPickOnBounds(false);
         return layerB;
-    }
-
-    public static void main(final String[] args) {
-        launch(args);
     }
 }

@@ -1,3 +1,5 @@
+package example;
+
 import java.util.function.IntFunction;
 
 import javafx.application.Application;

@@ -1,3 +1,5 @@
+package example;
+
 import java.nio.IntBuffer;
 import java.util.Arrays;
 

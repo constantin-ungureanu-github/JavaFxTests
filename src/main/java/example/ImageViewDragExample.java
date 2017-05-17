@@ -1,3 +1,5 @@
+package example;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -8,6 +10,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ImageViewDragExample extends Application {
+    public static void main(final String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(final Stage primaryStage) {
@@ -23,42 +28,39 @@ public class ImageViewDragExample extends Application {
 
     private Image createImage() {
         final WritableImage image = new WritableImage(50, 50);
-        for (int y = 0 ; y < 50; y++) {
-            for (int x = 0 ; x < 50 ; x++) {
-                Color color ;
+        for (int y = 0; y < 50; y++) {
+            for (int x = 0; x < 50; x++) {
+                Color color;
                 if (((x > 20) && (x < 30)) || ((y > 20) && (y < 30))) {
                     color = Color.AZURE;
                 } else {
-                    color = Color.CORNFLOWERBLUE ;
+                    color = Color.CORNFLOWERBLUE;
                 }
                 image.getPixelWriter().setColor(x, y, color);
             }
         }
-        return image ;
+        return image;
     }
 
     public static class DraggableImageView extends ImageView {
-        private double mouseX ;
-        private double mouseY ;
+        private double mouseX;
+        private double mouseY;
+
         public DraggableImageView(final Image image) {
             super(image);
 
             setOnMousePressed(event -> {
-                mouseX = event.getSceneX() ;
-                mouseY = event.getSceneY() ;
+                mouseX = event.getSceneX();
+                mouseY = event.getSceneY();
             });
 
             setOnMouseDragged(event -> {
-               final double deltaX = event.getSceneX() - mouseX ;
-               final double deltaY = event.getSceneY() - mouseY ;
-               relocate(getLayoutX() + deltaX, getLayoutY() + deltaY);
-               mouseX = event.getSceneX() ;
-               mouseY = event.getSceneY() ;
+                final double deltaX = event.getSceneX() - mouseX;
+                final double deltaY = event.getSceneY() - mouseY;
+                relocate(getLayoutX() + deltaX, getLayoutY() + deltaY);
+                mouseX = event.getSceneX();
+                mouseY = event.getSceneY();
             });
         }
-    }
-
-    public static void main(final String[] args) {
-        launch(args);
     }
 }

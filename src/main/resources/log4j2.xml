@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} %logger{36} - %msg%n" />
+		</Console>
+		<File name="Plots" fileName="plots.log" immediateFlush="false" append="true">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} %logger{36} - %msg%n" />
+		</File>
+	</Appenders>
+	<Loggers>
+		<Logger name="example.util" level="trace">
+			<AppenderRef ref="Plots" />
+		</Logger>
+		<Root level="info">
+			<AppenderRef ref="Console" />
+		</Root>
+	</Loggers>
+</Configuration>

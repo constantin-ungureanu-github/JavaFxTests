@@ -1,3 +1,5 @@
+package example;
+
 import java.util.function.DoubleUnaryOperator;
 
 import javafx.animation.Animation;
