@@ -1,40 +1,37 @@
 package plot.objects;
 
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
 import plot.axis.AxesSystem;
 
-public class Target extends Circle {
-    final AxesSystem<Double, Double> axes;
+public class Wafer extends Ellipse {
+    private final AxesSystem<Double, Double> axes;
     double orgSceneX, orgSceneY;
     double orgTranslateX, orgTranslateY;
 
-    public Target(final AxesSystem<Double, Double> axes, final double x, final double y, final double width) {
-        super(width);
+    public Wafer(final AxesSystem<Double, Double> axes, final double x, final double y, final double radiusX, final double radiusY) {
+        super(radiusX, radiusY);
 
         this.axes = axes;
 
-        setStroke(Color.BLACK);
-        setFill(Color.WHITE.deriveColor(1, 1, 1, 0.7));
+        setStroke(Color.DARKBLUE);
+        setFill(Color.LIGHTBLUE.deriveColor(1, 1, 1, 0.7));
 
         translateXProperty().bind(axes.getXAxis().lengthProperty().multiply(x).divide(axes.getXAxis().getLength()));
         translateYProperty().bind(axes.getYAxis().lengthProperty().multiply(y).divide(axes.getYAxis().getLength()));
 
-        cursorProperty().set(Cursor.HAND);
+        radiusXProperty().bind(axes.getXAxis().lengthProperty().multiply(radiusX).divide(axes.getXAxis().getLength()));
+        radiusYProperty().bind(axes.getYAxis().lengthProperty().multiply(radiusY).divide(axes.getYAxis().getLength()));
 
-        setOnMouseEntered(event -> {
-            setScaleX(2);
-            setScaleY(2);
-        });
-
-        setOnMouseExited(event -> {
-            setScaleX(1);
-            setScaleY(1);
+        setOnMouseClicked(event -> {
+            System.out.println(axes.invertX(event.getSceneX()));
+            System.out.println(axes.invertY(event.getSceneY()));
         });
 
         setOnMousePressed(event -> {
+            event.consume();
+
             translateXProperty().unbind();
             translateYProperty().unbind();
 
@@ -45,11 +42,11 @@ public class Target extends Circle {
 
             orgTranslateX = node.getTranslateX();
             orgTranslateY = node.getTranslateY();
-
-            event.consume();
         });
 
         setOnMouseDragged(event -> {
+            event.consume();
+
             final double offsetX = event.getSceneX() - orgSceneX;
             final double offsetY = event.getSceneY() - orgSceneY;
 
@@ -63,6 +60,8 @@ public class Target extends Circle {
         });
 
         setOnMouseReleased(event -> {
+            event.consume();
+
             final double offsetX = event.getSceneX() - orgSceneX;
             final double offsetY = event.getSceneY() - orgSceneY;
 
@@ -71,8 +70,6 @@ public class Target extends Circle {
 
             translateXProperty().bind(axes.getXAxis().lengthProperty().multiply(newTranslateX).divide(axes.getXAxis().getLength()));
             translateYProperty().bind(axes.getYAxis().lengthProperty().multiply(newTranslateY).divide(axes.getYAxis().getLength()));
-
-            event.consume();
         });
     }
 }

@@ -1,35 +1,31 @@
 package plot.objects;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import plot.axis.AxesSystem;
 
 public class Candidate extends Circle {
-    final Pane parent;
+    private final AxesSystem<Double, Double> axes;
 
-    public Candidate(final Pane parent, final double x, final double y, final double width) {
+    public Candidate(final AxesSystem<Double, Double> axes, final double x, final double y, final double width) {
         super(width);
 
-        this.parent = parent;
+        this.axes = axes;
+
         setStroke(Color.BLACK);
         setFill(Color.GREEN.deriveColor(1, 1, 1, 0.7));
 
-        translateXProperty().bind(parent.widthProperty().multiply(x).divide(parent.getWidth()));
-        translateYProperty().bind(parent.heightProperty().multiply(y).divide(parent.getHeight()));
+        translateXProperty().bind(axes.getXAxis().lengthProperty().multiply(x).divide(axes.getXAxis().getLength()));
+        translateYProperty().bind(axes.getYAxis().lengthProperty().multiply(y).divide(axes.getYAxis().getLength()));
 
-        setOnMouseEntered(onMouseEnteredEventHandler);
-        setOnMouseExited(onMouseExitedEventHandler);
+        setOnMouseEntered(event -> {
+            setScaleX(2);
+            setScaleY(2);
+        });
+
+        setOnMouseExited(event -> {
+            setScaleX(1);
+            setScaleY(1);
+        });
     }
-
-    private final EventHandler<MouseEvent> onMouseEnteredEventHandler = event -> {
-        setScaleX(2);
-        setScaleY(2);
-    };
-
-    private final EventHandler<MouseEvent> onMouseExitedEventHandler = event -> {
-        setScaleX(1);
-        setScaleY(1);
-    };
 }

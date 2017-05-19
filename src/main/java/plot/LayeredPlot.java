@@ -1,6 +1,5 @@
 package plot;
 
-import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,30 +24,44 @@ public class LayeredPlot extends StackPane {
     final Pane plotPane;
 
     public LayeredPlot() {
-        axes = new AxesSystem<>(getWidth(), getHeight(), -8, 8, -8, 8);
+        axes = new AxesSystem<>(-10, 10, -10, 10);
 
-        canvasPane = new CanvasPane();
+        axes.getXAxis().lengthProperty().bind(widthProperty());
+        axes.getYAxis().lengthProperty().bind(heightProperty());
 
-        overlayPane = new ObjectsPane();
+        axes.getXAxis().translateProperty().bind(widthProperty().divide(2));
+        axes.getYAxis().translateProperty().bind(heightProperty().divide(2));
+
+        axes.getXAxis().scaleProperty().bind(scaleXProperty());
+        axes.getYAxis().scaleProperty().bind(scaleYProperty());
+
+        axes.getXAxis().invertProperty().set(false);
+        axes.getYAxis().invertProperty().set(true);
+
+        canvasPane = new CanvasPane(axes);
+
+        overlayPane = new ObjectsPane(axes);
 
         plotPane = new PlotPane(axes);
 
-        axes.getXAxis().getLengthProperty().bind(widthProperty());
-        axes.getYAxis().getLengthProperty().bind(heightProperty());
+        getChildren().addAll(canvasPane, plotPane, overlayPane);
 
-        getChildren().addAll(axes, canvasPane, plotPane, overlayPane);
-    }
+        setOnScroll(event -> {
+            event.consume();
+            final double deltaY = event.getDeltaY();
 
-    public void saveToFile() {
-        final WritableImage image = snapshot(new SnapshotParameters(), null);
+            double zoomFactor = 1.05;
+            if (deltaY < 0) {
+                zoomFactor = 2.0 - zoomFactor;
+            }
+            setScaleX(getScaleX() * zoomFactor);
+            setScaleY(getScaleY() * zoomFactor);
 
-        final File outputFile = new File("pane.png");
-        final BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
-        try {
-            ImageIO.write(bImage, "png", outputFile);
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
+//            axes.getXAxis().lengthProperty().multiply(zoomFactor);
+//            axes.getYAxis().lengthProperty().multiply(zoomFactor);
+
+            event.consume();
+        });
     }
 
     public void chooseAndSaveToFile() {
@@ -68,5 +81,9 @@ public class LayeredPlot extends StackPane {
                 ex.printStackTrace();
             }
         }
+    }
+
+    public void addGrid() {
+        overlayPane.addObjects();
     }
 }

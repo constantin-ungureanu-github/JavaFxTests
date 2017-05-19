@@ -15,11 +15,11 @@ public class PlotPane extends Pane {
 
         setPickOnBounds(false);
 
-        axes.getXAxis().getLengthProperty().bind(widthProperty());
-        axes.getYAxis().getLengthProperty().bind(heightProperty());
+        this.axes.getXAxis().lengthProperty().addListener(event -> drawPlot());
+        this.axes.getYAxis().lengthProperty().addListener(event -> drawPlot());
 
-        widthProperty().addListener(event -> drawPlot());
-        heightProperty().addListener(event -> drawPlot());
+        this.axes.getXAxis().scaleProperty().addListener(event -> drawPlot());
+        this.axes.getYAxis().scaleProperty().addListener(event -> drawPlot());
 
         function = x -> Math.sinh(x);
         plot = new Plot(axes, function, 0.01);

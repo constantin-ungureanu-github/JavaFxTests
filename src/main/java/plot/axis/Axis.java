@@ -1,68 +1,104 @@
 package plot.axis;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.Side;
-import javafx.scene.layout.Region;
 
-public class Axis<T extends Number> extends Region {
+public class Axis<T extends Number> {
 
-    // value
-    DoubleProperty length = new SimpleDoubleProperty();
+    // Actual value in pixels.
+    private final DoubleProperty lengthProperty = new SimpleDoubleProperty(0);
 
-    // min
-    double min;
+    // Domain minimum value
+    private final DoubleProperty minimumProperty = new SimpleDoubleProperty(0);
 
-    // max
-    double max;
+    // Domain maximum value
+    private final DoubleProperty maximumProperty = new SimpleDoubleProperty(0);
 
-    // unit
+    // Translation
+    private final DoubleProperty translateProperty = new SimpleDoubleProperty(0);
 
-    // side
-    Side side;
+    // Scaling
+    private final DoubleProperty scaleProperty = new SimpleDoubleProperty(1);
 
-    // inverted
+    // Inversion
+    private final BooleanProperty invertProperty = new SimpleBooleanProperty(false);
 
-    // granularity
-
-    // translate
-
-    // scale
-
-    // padding
-
-    public Axis() {
-        setPickOnBounds(false);
+    public Axis(final double minimum, final double maximum) {
+        setMaximum(maximum);
+        setMinimum(minimum);
     }
 
-    public Axis(final double min, final double max)  {
-        this.min = min;
-        this.max = max;
-
-        setPickOnBounds(false);
-    }
-
-    public DoubleProperty getLengthProperty() {
-        return length;
+    public DoubleProperty lengthProperty() {
+        return lengthProperty;
     }
 
     public Double getLength() {
-        return length.get();
+        return lengthProperty.get();
     }
 
-    public void setLength(final Double length) {
-        this.length.set(length);
+//    public void setLength(final Double length) {
+//        this.lengthProperty.set(length);
+//    }
+
+    public DoubleProperty minimumProperty() {
+        return minimumProperty;
     }
 
-    public void setSide(final Side side) {
-        this.side = side;
+    public Double getMinimum() {
+        return minimumProperty.get();
     }
 
-    public double getMaximum() {
-        return max;
+    public void setMinimum(final Double minimum) {
+        this.minimumProperty.set(minimum);
     }
 
-    public double getMinimum() {
-        return min;
+    public DoubleProperty maximumProperty() {
+        return minimumProperty;
+    }
+
+    public Double getMaximum() {
+        return maximumProperty.get();
+    }
+
+    public void setMaximum(final Double maximum) {
+        this.maximumProperty.set(maximum);
+    }
+
+    public DoubleProperty translateProperty() {
+        return translateProperty;
+    }
+
+    public Double getTranslate() {
+        return translateProperty.get();
+    }
+
+    public void setTranslate(final Double translate) {
+        this.translateProperty.set(translate);
+    }
+
+    public DoubleProperty scaleProperty() {
+        return scaleProperty;
+    }
+
+    public Double getScale() {
+        return scaleProperty.get();
+    }
+
+    public void setScale(final Double scale) {
+        this.scaleProperty.set(scale);
+    }
+
+    public BooleanProperty invertProperty() {
+        return invertProperty;
+    }
+
+    public Boolean getInvert() {
+        return invertProperty.get();
+    }
+
+    public void setInvert(final Boolean invert) {
+        this.invertProperty.set(invert);
     }
 }

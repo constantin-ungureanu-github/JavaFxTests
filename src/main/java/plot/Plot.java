@@ -2,6 +2,7 @@ package plot;
 
 import java.util.function.Function;
 
+import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -25,32 +26,33 @@ public class Plot extends Region {
 
         setMinSize(Pane.USE_PREF_SIZE, Pane.USE_PREF_SIZE);
         setMaxSize(Pane.USE_PREF_SIZE, Pane.USE_PREF_SIZE);
-        setPrefSize(axes.getXAxis().getLength(), axes.getYAxis().getLength());
+        setPrefSize(this.axes.getXAxis().getLength(), axes.getYAxis().getLength());
     }
 
     public void drawPlot() {
-        final Path path = new Path();
-        path.setStroke(Color.ORANGE.deriveColor(0, 1, 1, 0.7));
-        path.setStrokeWidth(2);
+        Platform.runLater(() -> {
+            final Path path = new Path();
+            path.setStroke(Color.ORANGE.deriveColor(0, 1, 1, 0.7));
+            path.setStrokeWidth(2);
 
-        path.setClip(new Rectangle(0, 0, axes.getXAxis().getLength(), axes.getYAxis().getLength()));
+            path.setClip(new Rectangle(0, 0, axes.getXAxis().getLength(), axes.getYAxis().getLength()));
 
-        double x = axes.getMinX();
-        double y = function.apply(x);
+            double x = axes.getXAxis().getMinimum();
+            double y = function.apply(x);
 
-        path.getElements().add(new MoveTo(axes.applyX(x), axes.applyY(y)));
-
-        x += tick;
-        while (x < axes.getMaxX()) {
-            y = function.apply(x);
-
-            path.getElements().add(new LineTo(axes.applyX(x), axes.applyY(y)));
+            path.getElements().add(new MoveTo(axes.applyX(x), axes.applyY(y)));
 
             x += tick;
-        }
+            while (x < axes.getXAxis().getMaximum()) {
+                y = function.apply(x);
 
+                path.getElements().add(new LineTo(axes.applyX(x), axes.applyY(y)));
 
-        getChildren().clear();
-        getChildren().setAll(path);
+                x += tick;
+            }
+
+            getChildren().clear();
+            getChildren().setAll(path);
+        });
     }
 }
