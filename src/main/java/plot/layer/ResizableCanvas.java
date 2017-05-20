@@ -1,4 +1,4 @@
-package plot;
+package plot.layer;
 
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
@@ -6,10 +6,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import plot.axis.AxesSystem;
 
-public class ResizableCanvas extends Canvas {
-    private final AxesSystem<Double, Double> axes;
+class ResizableCanvas extends Canvas {
+    private final AxesSystem axes;
 
-    public ResizableCanvas(final AxesSystem<Double, Double> axes) {
+    public ResizableCanvas(final AxesSystem axes) {
         this.axes = axes;
 
         setPickOnBounds(false);

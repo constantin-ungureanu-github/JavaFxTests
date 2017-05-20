@@ -7,11 +7,11 @@ import javafx.scene.shape.Circle;
 import plot.axis.AxesSystem;
 
 public class Target extends Circle {
-    final AxesSystem<Double, Double> axes;
+    final AxesSystem axes;
     double orgSceneX, orgSceneY;
     double orgTranslateX, orgTranslateY;
 
-    public Target(final AxesSystem<Double, Double> axes, final double x, final double y, final double width) {
+    public Target(final AxesSystem axes, final double x, final double y, final double width) {
         super(width);
 
         this.axes = axes;

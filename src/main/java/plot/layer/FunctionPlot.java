@@ -1,4 +1,4 @@
-package plot;
+package plot.layer;
 
 import java.util.function.Function;
 
@@ -12,12 +12,12 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import plot.axis.AxesSystem;
 
-public class Plot extends Region {
-    final AxesSystem<Double, Double> axes;
+class FunctionPlot extends Region {
+    final AxesSystem axes;
     final Function<Double, Double> function;
     final double tick;
 
-    public Plot(final AxesSystem<Double, Double> axes, final Function<Double, Double> function, final double tick) {
+    public FunctionPlot(final AxesSystem axes, final Function<Double, Double> function, final double tick) {
         this.axes = axes;
         this.function = function;
         this.tick = tick;
@@ -37,13 +37,13 @@ public class Plot extends Region {
 
             path.setClip(new Rectangle(0, 0, axes.getXAxis().getLength(), axes.getYAxis().getLength()));
 
-            double x = axes.getXAxis().getMinimum();
+            double x = axes.getxDomain().getMin();
             double y = function.apply(x);
 
             path.getElements().add(new MoveTo(axes.applyX(x), axes.applyY(y)));
 
             x += tick;
-            while (x < axes.getXAxis().getMaximum()) {
+            while (x < axes.getxDomain().getMax()) {
                 y = function.apply(x);
 
                 path.getElements().add(new LineTo(axes.applyX(x), axes.applyY(y)));

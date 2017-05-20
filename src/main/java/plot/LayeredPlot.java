@@ -15,16 +15,10 @@ import javafx.stage.FileChooser;
 import plot.axis.AxesSystem;
 
 public class LayeredPlot extends StackPane {
-    final AxesSystem<Double, Double> axes;
+    private final AxesSystem axes;
 
-    final CanvasPane canvasPane;
-
-    final ObjectsPane overlayPane;
-
-    final Pane plotPane;
-
-    public LayeredPlot() {
-        axes = new AxesSystem<>(-10, 10, -10, 10);
+    public LayeredPlot(final AxesSystem axes, final Pane... panes) {
+        this.axes = axes;
 
         axes.getXAxis().lengthProperty().bind(widthProperty());
         axes.getYAxis().lengthProperty().bind(heightProperty());
@@ -38,30 +32,21 @@ public class LayeredPlot extends StackPane {
         axes.getXAxis().invertProperty().set(false);
         axes.getYAxis().invertProperty().set(true);
 
-        canvasPane = new CanvasPane(axes);
+        getChildren().addAll(panes);
 
-        overlayPane = new ObjectsPane(axes);
-
-        plotPane = new PlotPane(axes);
-
-        getChildren().addAll(canvasPane, plotPane, overlayPane);
-
-        setOnScroll(event -> {
-            event.consume();
-            final double deltaY = event.getDeltaY();
-
-            double zoomFactor = 1.05;
-            if (deltaY < 0) {
-                zoomFactor = 2.0 - zoomFactor;
-            }
-            setScaleX(getScaleX() * zoomFactor);
-            setScaleY(getScaleY() * zoomFactor);
-
-//            axes.getXAxis().lengthProperty().multiply(zoomFactor);
-//            axes.getYAxis().lengthProperty().multiply(zoomFactor);
-
-            event.consume();
-        });
+//        setOnScroll(event -> {
+//            event.consume();
+//            final double deltaY = event.getDeltaY();
+//
+//            double zoomFactor = 1.05;
+//            if (deltaY < 0) {
+//                zoomFactor = 2.0 - zoomFactor;
+//            }
+//            setScaleX(getScaleX() * zoomFactor);
+//            setScaleY(getScaleY() * zoomFactor);
+//
+//            event.consume();
+//        });
     }
 
     public void chooseAndSaveToFile() {
@@ -81,9 +66,5 @@ public class LayeredPlot extends StackPane {
                 ex.printStackTrace();
             }
         }
-    }
-
-    public void addGrid() {
-        overlayPane.addObjects();
     }
 }

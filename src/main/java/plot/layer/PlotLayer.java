@@ -1,16 +1,16 @@
-package plot;
+package plot.layer;
 
 import java.util.function.Function;
 
 import javafx.scene.layout.Pane;
 import plot.axis.AxesSystem;
 
-public class PlotPane extends Pane {
-    final AxesSystem<Double, Double> axes;
+public class PlotLayer extends Pane {
+    final AxesSystem axes;
     final Function<Double, Double> function;
-    final Plot plot;
+    final FunctionPlot plot;
 
-    public PlotPane(final AxesSystem<Double, Double> axes) {
+    public PlotLayer(final AxesSystem axes) {
         this.axes = axes;
 
         setPickOnBounds(false);
@@ -22,7 +22,7 @@ public class PlotPane extends Pane {
         this.axes.getYAxis().scaleProperty().addListener(event -> drawPlot());
 
         function = x -> Math.sinh(x);
-        plot = new Plot(axes, function, 0.01);
+        plot = new FunctionPlot(axes, function, 0.01);
     }
 
     public void drawPlot() {

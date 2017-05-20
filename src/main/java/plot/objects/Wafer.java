@@ -6,11 +6,11 @@ import javafx.scene.shape.Ellipse;
 import plot.axis.AxesSystem;
 
 public class Wafer extends Ellipse {
-    private final AxesSystem<Double, Double> axes;
+    private final AxesSystem axes;
     double orgSceneX, orgSceneY;
     double orgTranslateX, orgTranslateY;
 
-    public Wafer(final AxesSystem<Double, Double> axes, final double x, final double y, final double radiusX, final double radiusY) {
+    public Wafer(final AxesSystem axes, final double x, final double y, final double radiusX, final double radiusY) {
         super(radiusX, radiusY);
 
         this.axes = axes;
@@ -18,8 +18,11 @@ public class Wafer extends Ellipse {
         setStroke(Color.DARKBLUE);
         setFill(Color.LIGHTBLUE.deriveColor(1, 1, 1, 0.7));
 
-        translateXProperty().bind(axes.getXAxis().lengthProperty().multiply(x).divide(axes.getXAxis().getLength()));
-        translateYProperty().bind(axes.getYAxis().lengthProperty().multiply(y).divide(axes.getYAxis().getLength()));
+        translateXProperty().bind(axes.getXAxis().translateProperty().multiply(x).divide(axes.getXAxis().getTranslate()));
+        translateYProperty().bind(axes.getYAxis().translateProperty().multiply(y).divide(axes.getYAxis().getTranslate()));
+
+//        translateXProperty().bind(axes.getXAxis().lengthProperty().multiply(x).divide(axes.getXAxis().getLength()));
+//        translateYProperty().bind(axes.getYAxis().lengthProperty().multiply(y).divide(axes.getYAxis().getLength()));
 
         radiusXProperty().bind(axes.getXAxis().lengthProperty().multiply(radiusX).divide(axes.getXAxis().getLength()));
         radiusYProperty().bind(axes.getYAxis().lengthProperty().multiply(radiusY).divide(axes.getYAxis().getLength()));
@@ -68,8 +71,8 @@ public class Wafer extends Ellipse {
             final double newTranslateX = orgTranslateX + offsetX;
             final double newTranslateY = orgTranslateY + offsetY;
 
-            translateXProperty().bind(axes.getXAxis().lengthProperty().multiply(newTranslateX).divide(axes.getXAxis().getLength()));
-            translateYProperty().bind(axes.getYAxis().lengthProperty().multiply(newTranslateY).divide(axes.getYAxis().getLength()));
+            translateXProperty().bind(axes.getXAxis().translateProperty().multiply(newTranslateX).divide(axes.getXAxis().getTranslate()));
+            translateYProperty().bind(axes.getYAxis().translateProperty().multiply(newTranslateY).divide(axes.getYAxis().getTranslate()));
         });
     }
 }

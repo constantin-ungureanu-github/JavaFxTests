@@ -5,9 +5,9 @@ import javafx.scene.shape.Circle;
 import plot.axis.AxesSystem;
 
 public class Candidate extends Circle {
-    private final AxesSystem<Double, Double> axes;
+    private final AxesSystem axes;
 
-    public Candidate(final AxesSystem<Double, Double> axes, final double x, final double y, final double width) {
+    public Candidate(final AxesSystem axes, final double x, final double y, final double width) {
         super(width);
 
         this.axes = axes;
