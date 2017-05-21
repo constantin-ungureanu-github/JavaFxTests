@@ -50,7 +50,7 @@ public class Axis {
         return invertProperty;
     }
 
-    public Boolean getInvert() {
-        return invertProperty.get();
+    public Double getInvert() {
+        return invertProperty.get() == false ? 1.0 : -1.0;
     }
 }

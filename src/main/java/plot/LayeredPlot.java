@@ -23,30 +23,29 @@ public class LayeredPlot extends StackPane {
         axes.getXAxis().lengthProperty().bind(widthProperty());
         axes.getYAxis().lengthProperty().bind(heightProperty());
 
-        axes.getXAxis().translateProperty().bind(widthProperty().divide(2));
-        axes.getYAxis().translateProperty().bind(heightProperty().divide(2));
-
-        axes.getXAxis().scaleProperty().bind(scaleXProperty());
-        axes.getYAxis().scaleProperty().bind(scaleYProperty());
-
         axes.getXAxis().invertProperty().set(false);
         axes.getYAxis().invertProperty().set(true);
 
+        axes.getXAxis().translateProperty().bind(widthProperty().divide(2));
+        axes.getYAxis().translateProperty().bind(heightProperty().divide(2));
+
+        axes.getXAxis().scaleProperty().set(1);
+        axes.getYAxis().scaleProperty().set(1);
+
         getChildren().addAll(panes);
 
-//        setOnScroll(event -> {
-//            event.consume();
-//            final double deltaY = event.getDeltaY();
-//
-//            double zoomFactor = 1.05;
-//            if (deltaY < 0) {
-//                zoomFactor = 2.0 - zoomFactor;
-//            }
-//            setScaleX(getScaleX() * zoomFactor);
-//            setScaleY(getScaleY() * zoomFactor);
-//
-//            event.consume();
-//        });
+        setOnScroll(event -> {
+            event.consume();
+            final double deltaY = event.getDeltaY();
+
+            double zoomFactor = 1.05;
+            if (deltaY < 0) {
+                zoomFactor = 2.0 - zoomFactor;
+            }
+
+            axes.getXAxis().scaleProperty().set(axes.getXAxis().getScale() * zoomFactor);
+            axes.getYAxis().scaleProperty().set(axes.getYAxis().getScale() * zoomFactor);
+        });
     }
 
     public void chooseAndSaveToFile() {

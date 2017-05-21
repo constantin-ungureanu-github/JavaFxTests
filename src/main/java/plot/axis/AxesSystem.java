@@ -44,10 +44,12 @@ public class AxesSystem {
      * @return the real coordinates
      */
     public double applyX(final double x) {
-        final double ix = xAxis.getInvert().equals(false) ? 1 : -1;
-        final double sx = xAxis.getLength() / xDomain.getInterval();
+//        final double ix = xAxis.getInvert();
+        final double s = xAxis.getScale();
+        final double sx = s * xAxis.getLength() / xDomain.getInterval();
+        final double t = xAxis.getTranslate();
 
-        return (ix * sx * xAxis.getScale() * x) + xAxis.getScale() * xAxis.getTranslate();
+        return sx * x + s * t;
     }
 
     /**
@@ -58,10 +60,12 @@ public class AxesSystem {
      * @return the real coordinates
      */
     public double applyY(final double y) {
-        final double iy = yAxis.getInvert().equals(false) ? 1 : -1;
-        final double sy = yAxis.getLength() / yDomain.getInterval();
+//        final double iy = yAxis.getInvert();
+        final double s = yAxis.getScale();
+        final double sy =  s * yAxis.getLength() / yDomain.getInterval();
+        final double t = yAxis.getTranslate();
 
-        return (iy * sy * yAxis.getScale() * y) + yAxis.getScale() * yAxis.getTranslate();
+        return sy * y + s * t;
     }
 
     /**
@@ -72,10 +76,12 @@ public class AxesSystem {
      * @return the pixels coordinates
      */
     public double invertX(final double x) {
-        final double ix = xAxis.getInvert().equals(false) ? 1 : -1;
-        final double sx = xAxis.getLength() / xDomain.getInterval();
+//        final double ix = xAxis.getInvert();
+        final double s = xAxis.getScale();
+        final double sx = s * xAxis.getLength() / xDomain.getInterval();
+        final double t = xAxis.getTranslate();
 
-        return ix * ((x - xAxis.getScale() * xAxis.getTranslate()) / sx * xAxis.getScale());
+        return (x - s * t) / (sx);
     }
 
     /**
@@ -86,9 +92,11 @@ public class AxesSystem {
      * @return the pixels coordinates
      */
     public double invertY(final double y) {
-        final double iy = yAxis.getInvert().equals(false) ? 1 : -1;
-        final double sy = yAxis.getLength() / yDomain.getInterval();
+//        final double iy = yAxis.getInvert();
+        final double s = yAxis.getScale();
+        final double sy = s * yAxis.getLength() / yDomain.getInterval();
+        final double t = yAxis.getTranslate();
 
-        return iy * ((y - yAxis.getScale() * yAxis.getTranslate()) / sy * yAxis.getScale());
+        return (y - s * t) / (sy);
     }
 }

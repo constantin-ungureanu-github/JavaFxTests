@@ -8,17 +8,22 @@ import plot.axis.AxesSystem;
 
 class ResizableCanvas extends Canvas {
     private final AxesSystem axes;
+    private double orgWidth;
+    private double orgHeight;
 
     public ResizableCanvas(final AxesSystem axes) {
         this.axes = axes;
 
         setPickOnBounds(false);
 
-        widthProperty().bind(axes.getXAxis().lengthProperty());
-        heightProperty().bind(axes.getYAxis().lengthProperty());
+        widthProperty().bind(axes.getXAxis().lengthProperty().multiply(axes.getXAxis().scaleProperty()));
+        heightProperty().bind(axes.getYAxis().lengthProperty().multiply(axes.getYAxis().scaleProperty()));
 
-        axes.getXAxis().lengthProperty().addListener(event -> drawCanvas());
-        axes.getYAxis().lengthProperty().addListener(event -> drawCanvas());
+        orgWidth = getWidth();
+        orgHeight = getHeight();
+
+        widthProperty().addListener(event -> drawCanvas());
+        heightProperty().addListener(event -> drawCanvas());
     }
 
     @Override
@@ -28,11 +33,11 @@ class ResizableCanvas extends Canvas {
 
     private void drawCanvas() {
         Platform.runLater(() -> {
-            final double width = axes.getXAxis().getLength();
-            final double height = axes.getYAxis().getLength();
+            final double width = getWidth();
+            final double height = getHeight();
 
             final GraphicsContext gc = getGraphicsContext2D();
-            gc.clearRect(0, 0, width, height);
+            gc.clearRect(0, 0, orgWidth, orgHeight);
 
             gc.setStroke(Color.RED);
             gc.strokeLine(0, 0, width, height);
@@ -40,6 +45,9 @@ class ResizableCanvas extends Canvas {
 
             gc.setStroke(Color.RED);
             gc.strokeRoundRect(10, 10, width - 20, height - 20, 10, 10);
+
+            orgWidth = width;
+            orgHeight = height;
         });
     }
 }
