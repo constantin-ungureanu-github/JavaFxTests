@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 public class Axis {
 
-    // Actual value in pixels.
+    // Actual value of the axis in pixels.
     private final DoubleProperty lengthProperty = new SimpleDoubleProperty(0);
 
     // Translation
@@ -50,7 +50,7 @@ public class Axis {
         return invertProperty;
     }
 
-    public Double getInvert() {
-        return invertProperty.get() == false ? 1.0 : -1.0;
+    public Boolean getInvert() {
+        return invertProperty.get();
     }
 }

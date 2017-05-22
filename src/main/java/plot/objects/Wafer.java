@@ -18,8 +18,8 @@ public class Wafer extends Ellipse {
         setStroke(Color.DARKBLUE);
         setFill(Color.LIGHTBLUE.deriveColor(1, 1, 1, 0.7));
 
-        translateXProperty().bind(axes.getXAxis().lengthProperty().multiply(axes.getXAxis().scaleProperty()).multiply(x).divide(axes.getXAxis().getLength() * axes.getXAxis().getScale()));
-        translateYProperty().bind(axes.getYAxis().lengthProperty().multiply(axes.getYAxis().scaleProperty()).multiply(y).divide(axes.getYAxis().getLength() * axes.getYAxis().getScale()));
+        translateXProperty().bind(axes.getXAxis().lengthProperty().multiply(axes.getXAxis().scaleProperty()).multiply(x / (axes.getXAxis().getLength() * axes.getXAxis().getScale())));
+        translateYProperty().bind(axes.getYAxis().lengthProperty().subtract(axes.getYAxis().lengthProperty().multiply(axes.getYAxis().scaleProperty()).multiply((axes.getYAxis().getLength() - y) / (axes.getYAxis().getLength() * axes.getYAxis().getScale()))));
 
         radiusXProperty().bind(axes.getXAxis().lengthProperty().multiply(axes.getXAxis().scaleProperty()).multiply(radiusX).divide(axes.getXAxis().getLength() * axes.getXAxis().getScale()));
         radiusYProperty().bind(axes.getYAxis().lengthProperty().multiply(axes.getXAxis().scaleProperty()).multiply(radiusY).divide(axes.getYAxis().getLength() * axes.getYAxis().getScale()));
@@ -59,8 +59,8 @@ public class Wafer extends Ellipse {
             final double newTranslateX = orgTranslateX + offsetX;
             final double newTranslateY = orgTranslateY + offsetY;
 
-            translateXProperty().bind(axes.getXAxis().lengthProperty().multiply(axes.getXAxis().scaleProperty()).multiply(newTranslateX).divide(axes.getXAxis().getLength() * axes.getXAxis().getScale()));
-            translateYProperty().bind(axes.getYAxis().lengthProperty().multiply(axes.getYAxis().scaleProperty()).multiply(newTranslateY).divide(axes.getYAxis().getLength() * axes.getYAxis().getScale()));
+            translateXProperty().bind(axes.getXAxis().lengthProperty().multiply(axes.getXAxis().scaleProperty()).multiply(newTranslateX / (axes.getXAxis().getLength() * axes.getXAxis().getScale())));
+            translateYProperty().bind(axes.getYAxis().lengthProperty().subtract(axes.getYAxis().lengthProperty().multiply(axes.getYAxis().scaleProperty()).multiply((axes.getYAxis().getLength() - newTranslateY) / (axes.getYAxis().getLength() * axes.getYAxis().getScale()))));
         });
     }
 }

@@ -20,11 +20,14 @@ public class LayeredPlot extends StackPane {
     public LayeredPlot(final AxesSystem axes, final Pane... panes) {
         this.axes = axes;
 
+        final boolean xInvert = false;
+        final boolean yInvert = true;
+
         axes.getXAxis().lengthProperty().bind(widthProperty());
         axes.getYAxis().lengthProperty().bind(heightProperty());
 
-        axes.getXAxis().invertProperty().set(false);
-        axes.getYAxis().invertProperty().set(true);
+        axes.getXAxis().invertProperty().set(xInvert);
+        axes.getYAxis().invertProperty().set(yInvert);
 
         axes.getXAxis().translateProperty().bind(widthProperty().divide(2));
         axes.getYAxis().translateProperty().bind(heightProperty().divide(2));
